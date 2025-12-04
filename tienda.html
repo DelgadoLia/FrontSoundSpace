@@ -1,0 +1,304 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda - SpaceSound</title>
+    <link rel="icon" type="image/png" href="http://localhost:3000/uploads/logo.png">
+    <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="http://localhost:3000/uploads/logo.png" alt="SpaceSound Logo" class="logo-img">
+                <div class="logo">SpaceSound</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="tienda.html">Tienda</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
+                    <li><a href="contactanos.html">Contáctanos</a></li>
+                </ul> 
+            </nav>
+            <div class="user-actions">
+                <!-- Botón de Accesibilidad -->
+                <div class="accessibility-widget">
+                    <button class="accessibility-btn" id="accessibilityToggle">
+                        <i class="fas fa-universal-access"></i>
+                    </button>
+                    <div class="accessibility-panel" id="accessibilityPanel">
+                        <div class="accessibility-header">
+                            <h4>Accesibilidad</h4>
+                            <button class="close-panel">&times;</button>
+                        </div>
+                        
+                        <!-- Modo Contraste -->
+                        <div class="accessibility-option">
+                            <label>Modo de Contraste</label>
+                            <div class="toggle-switch">
+                                <button class="toggle-btn active" data-theme="dark">
+                                    <i class="fas fa-moon"></i> Oscuro
+                                </button>
+                                <button class="toggle-btn" data-theme="light">
+                                    <i class="fas fa-sun"></i> Claro
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Tamaño de Texto -->
+                        <div class="accessibility-option">
+                            <label>Tamaño de Texto</label>
+                            <div class="text-size-controls">
+                                <button class="size-btn" data-size="small">A-</button>
+                                <button class="size-btn active" data-size="normal">A</button>
+                                <button class="size-btn" data-size="large">A+</button>
+                                <button class="size-btn" data-size="xlarge">A++</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Espaciado -->
+                        <div class="accessibility-option">
+                            <label>Espaciado de Texto</label>
+                            <div class="spacing-controls">
+                                <button class="spacing-btn active" data-spacing="normal">Normal</button>
+                                <button class="spacing-btn" data-spacing="large">Amplio</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <!-- Botones de cuenta y de carrito -->
+                <!-- Botón de Cuenta -->
+                <div class="user-account">
+                    <button class="user-btn" id="accountToggle">
+                        <i class="fas fa-user"></i>
+                        <span id="accountName">Mi Cuenta</span>
+                    </button>
+
+                    <!-- ventanita -->
+                    <div class="account-panel" id="accountPanel">
+                        <div class="account-header">
+                            <h4>Mi Cuenta</h4>
+                            <button class="close-account">&times;</button>
+                        </div>
+
+                        <div class="account-info">
+                            <p><strong>Nombre:</strong> <span id="panel-nombre">-</span></p>
+                            <p><strong>Cuenta:</strong> <span id="panel-username">-</span></p>
+                            <p><strong>Rol:</strong> <span id="panel-rol">-</span></p>
+                        </div>
+
+                        <button class="logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+                <button class="cart-btn" onclick="window.location.href='carrito.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    Carrito
+                    <span id="cartCount" class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section Tienda -->
+    <section class="tienda-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Tienda SpaceSound</h1>
+                <p>Descubre productos exclusivos de tu banda favorita</p>
+                <div class="search-bar">
+                    <input type="text" id="producto-search" placeholder="Buscar productos...">
+                    <button onclick="buscarProductos()"><i class="fas fa-search"></i> Buscar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categorías -->
+    <section class="categorias">
+        <div class="container">
+            <h2 class="section-title">Categorías</h2>
+            <div class="categorias-grid">
+                <div class="categoria-card">
+                    <i class="fas fa-music"></i>
+                    <h3>Rock</h3>
+                    <p>¡Energía que rompe esquemas!</p>
+                </div>
+                <div class="categoria-card">
+                    <i class="fas fa-compact-disc"></i>
+                    <h3>Clasico</h3>
+                    <p>Melodías que trascienden el tiempo</p>
+                </div>
+                <div class="categoria-card">
+                    <i class="fas fa-guitar"></i>
+                    <h3>Corrido</h3>
+                    <p>Historias que resuenan en cada verso</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    </section>
+
+    <!-- Productos más vendidos -->
+    <section class="music">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Productos</h2>
+                <div class="sort-by-container">
+                    <span class="sort-by-label">Ordenar por:</span>
+                    <div class="sort-by-dropdown" id="sortByDropdown">
+                        <button class="sort-by-btn" id="sortByBtn">
+                            <span id="selectedSortOption">Todos los productos</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="sort-by-options">
+                            <div class="sort-option active" data-range="all">Todos los productos</div>
+                            <div class="sort-option" data-range="300-400">Precio: $300 - $400</div>
+                            <div class="sort-option" data-range="400-500">Precio: $400 - $500</div>
+                            <div class="sort-option" data-range="500-700">Precio: $500 - $700</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="productos-grid" id="productos-mas-vendidos">
+                <div class="loading-products">Cargando productos...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cupones -->
+    <section class="cupon-banner">
+        <div class="container">
+            <div class="cupon-content">
+                <div class="cupon-info">
+                    <h3>🎉 Cupón Especial 🎉</h3>
+                    <h2>ROCK25</h2>
+                    <p>25% DE DESCUENTO EN TODA LA TIENDA</p>
+                    <small>Válido hasta el 30 de Diciembre 2024</small>
+                </div>
+                <button class="btn-copiar-cupon" onclick="copiarCupon()">
+                    <i class="fas fa-copy"></i> Copiar Código
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ofertas Especiales -->
+    <section class="ofertas">
+        <div class="container">
+            <h2 class="section-title">Ofertas Especiales</h2>
+            <div class="productos-grid" id="ofertas-especiales">
+                <div class="loading-products">Cargando ofertas...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Producto -->
+    <div id="modalProducto" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-producto-container">
+                <div class="modal-imagen-container">
+                    <img id="modalImagen" class="modal-img" src="" alt="Producto">
+                </div>
+                <div class="modal-info-container">
+                    <h2 id="modalNombre"></h2>
+                    <div class="modal-precio" id="modalPrecio"></div>
+                    <div class="modal-disponibilidad" id="modalDisponibilidad"></div>
+                    <div class="modal-categoria" id="modalCategoria"></div>
+                    
+                    <div class="cantidad-selector">
+                        <span>Cantidad:</span>
+                        <div class="cantidad-controls">
+                            <button class="btn-cantidad" id="decreaseQty">-</button>
+                            <span class="cantidad-value" id="cantidadValue">1</span>
+                            <button class="btn-cantidad" id="increaseQty">+</button>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-agregar-carrito">
+                        <i class="fas fa-shopping-cart"></i> Añadir al Carrito
+                    </button>
+                    
+                    <div class="modal-descripcion">
+                        <h3>Descripción</h3>
+                        <p id="modalDescripcion"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón flotante -->
+    <div id="chatToggle" class="chat-toggle">💬</div>
+
+    <!-- Panel de chat -->
+    <div id="chatPanel" class="chat-panel">
+        <div class="chat-header">
+            <span>Chat</span>
+            <button id="closeChat" class="close-chat">×</button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages"></div>
+
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
+            <button id="sendChat">Enviar</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Space Sound</h3>
+                    <p>"La ciudad donde la música nunca deja de girar"</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="tienda.html">Tienda</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
+                        <li><a href="contactanos.html">Contáctanos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Síguenos</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=100083262605033&locale=es_LA"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/space_sound_of/"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://x.com/SpaceSoundMx"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>talesturntable@gmail.com</p>
+                    <p>+1 234 567 8900</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p class="copy">© 2025 SpaceSound. ProyectoFinal Programación de Sistemas Web.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="javascript/index.js"></script>
+<<<<<<< HEAD
+=======
+    <script src="javascript/chat.js"></script>
+</body>
+>>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
+</html>

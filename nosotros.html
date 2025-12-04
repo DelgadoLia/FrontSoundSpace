@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros - SpaceSound</title>
+    <link rel="icon" type="image/png" href="http://localhost:3000/uploads/logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://kit.fontawesome.com/f9c3e36fb0.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display:wght@400;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="http://localhost:3000/uploads/logo.png" alt="SpaceSound Logo" class="logo-img">
+                <div class="logo">SpaceSound</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="tienda.html">Tienda</a></li>
+                    <li><a href="nosotros.html" style="color: #ff5252;">Nosotros</a></li>
+                    <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
+                    <li><a href="contactanos.html">Contáctanos</a></li>
+                </ul> 
+            </nav>
+            <div class="user-actions">
+                <!-- Botón de Accesibilidad -->
+                <div class="accessibility-widget">
+                    <button class="accessibility-btn" id="accessibilityToggle">
+                        <i class="fas fa-universal-access"></i>
+                    </button>
+                    <div class="accessibility-panel" id="accessibilityPanel">
+                        <div class="accessibility-header">
+                            <h4>Accesibilidad</h4>
+                            <button class="close-panel">&times;</button>
+                        </div>
+                        
+                        <!-- Modo Contraste -->
+                        <div class="accessibility-option">
+                            <label>Modo de Contraste</label>
+                            <div class="toggle-switch">
+                                <button class="toggle-btn active" data-theme="dark">
+                                    <i class="fas fa-moon"></i> Oscuro
+                                </button>
+                                <button class="toggle-btn" data-theme="light">
+                                    <i class="fas fa-sun"></i> Claro
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Tamaño de Texto -->
+                        <div class="accessibility-option">
+                            <label>Tamaño de Texto</label>
+                            <div class="text-size-controls">
+                                <button class="size-btn" data-size="small">A-</button>
+                                <button class="size-btn active" data-size="normal">A</button>
+                                <button class="size-btn" data-size="large">A+</button>
+                                <button class="size-btn" data-size="xlarge">A++</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Espaciado -->
+                        <div class="accessibility-option">
+                            <label>Espaciado de Texto</label>
+                            <div class="spacing-controls">
+                                <button class="spacing-btn active" data-spacing="normal">Normal</button>
+                                <button class="spacing-btn" data-spacing="large">Amplio</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <!-- Botones de cuenta y de carrito -->
+                <!-- Botón de Cuenta -->
+                <div class="user-account">
+                    <button class="user-btn" id="accountToggle">
+                        <i class="fas fa-user"></i>
+                        <span id="accountName">Mi Cuenta</span>
+                    </button>
+
+                    <!-- ventanita -->
+                    <div class="account-panel" id="accountPanel">
+                        <div class="account-header">
+                            <h4>Mi Cuenta</h4>
+                            <button class="close-account">&times;</button>
+                        </div>
+
+                        <div class="account-info">
+                            <p><strong>Nombre:</strong> <span id="panel-nombre">-</span></p>
+                            <p><strong>Cuenta:</strong> <span id="panel-username">-</span></p>
+                            <p><strong>Rol:</strong> <span id="panel-rol">-</span></p>
+                        </div>
+
+                        <button class="logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+                <button class="cart-btn" onclick="window.location.href='carrito.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    Carrito
+                    <span id="cartCount" class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section Nosotros -->
+    <section class="about-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Conoce al Equipo SpaceSound</h1>
+                <p>Las mentes creativas detrás de tu tienda de música favorita</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Historia -->
+    <section class="about-story">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-text">
+                    <h2>Nuestra Historia</h2>
+                    <p>SpaceSound nació de la pasión compartida por cinco desarrolladoras web que encontraron en la música la inspiración perfecta para crear una experiencia digital única.</p>
+                    <p>Como estudiantes de Programación de Sistemas Web, unimos nuestro talento y conocimiento para construir más que una tienda online - creamos un espacio donde los amantes de la música pueden descubrir y adquirir sus discos favoritos.</p>
+                    <p>Nos especializamos exclusivamente en <strong>discos de corridos, rock y música clásica</strong>, ofreciendo una cuidadosa selección que refleja la diversidad y riqueza de estos géneros musicales.</p>
+                </div>
+                <div class="story-stats">
+                    <div class="stat-card">
+                        <h3>5</h3>
+                        <p>Desarrolladoras</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>3</h3>
+                        <p>Géneros Musicales</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>100%</h3>
+                        <p>Enfoque en Música</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Equipo -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="section-title">Nuestro Equipo</h2>
+            <p class="section-subtitle">Conoce a las desarrolladoras que hicieron posible SpaceSound</p>
+            
+            <div class="team-grid">
+                <!-- Integrante 1 -->
+                <div class="team-card">
+                    <div class="team-img">
+                        <img src="http://localhost:3000/uploads/dulce.jpeg" alt="Dulce Mariana Andrade Olvera">
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Dulce Mariana Andrade Olvera</h3>
+                        <p class="team-role">Desarrolladora Full Stack</p>
+                        <p class="team-desc">Especialista en arquitectura de base de datos y experiencia de usuario. Apasionada por crear interfaces intuitivas.</p>
+                    </div>
+                </div>
+
+                <!-- Integrante 2 -->
+                <div class="team-card">
+                    <div class="team-img">
+                        <img src="http://localhost:3000/uploads/li.jpeg" alt="Elia Guadalupe Arteaga Delgado">
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Elia Guadalupe Arteaga Delgado</h3>
+                        <p class="team-role">Desarrolladora Frontend</p>
+                        <p class="team-desc">Experta en diseño responsive y tecnologías modernas de CSS. Transforma ideas en experiencias visuales impactantes.</p>
+                    </div>
+                </div>
+
+                <!-- Integrante 3 -->
+                <div class="team-card">
+                    <div class="team-img">
+                        <img src="http://localhost:3000/uploads/val.jpeg" alt="Valeria Ramos López">
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Valeria Ramos López</h3>
+                        <p class="team-role">Desarrolladora Backend</p>
+                        <p class="team-desc">Encargada de la lógica del servidor y APIs. Garantiza que cada interacción en el sitio sea rápida y segura.</p>
+                    </div>
+                </div>
+
+                <!-- Integrante 4 -->
+                <div class="team-card">
+                    <div class="team-img">
+                        <img src="http://localhost:3000/uploads/gina.jpeg" alt="Georgina Guadalupe Calzada González">
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Georgina Guadalupe Calzada González</h3>
+                        <p class="team-role">Desarrolladora Full Stack</p>
+                        <p class="team-desc">Especialista en integración de sistemas y optimización de rendimiento. Conecta perfectamente frontend y backend.</p>
+                    </div>
+                </div>
+
+                <!-- Integrante 5 -->
+                <div class="team-card">
+                    <div class="team-img">
+                        <img src="http://localhost:3000/uploads/darely.jpeg" alt="Darely Quezada Guerrero">
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3>Darely Quezada Guerrero</h3>
+                        <p class="team-role">Desarrolladora Frontend</p>
+                        <p class="team-desc">Creativa en diseño de interfaces y experiencia de usuario. Se asegura de que cada visita al sitio sea memorable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Misión y Visión -->
+    <section class="mission-vision">
+        <div class="container">
+            <div class="mv-grid">
+                <div class="mv-card">
+                    <div class="mv-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Nuestra Misión</h3>
+                    <p>Conectar a los amantes de la música con sus artistas y géneros favoritos a través de una plataforma digital intuitiva, ofreciendo una selección cuidadosa de discos de corridos, rock y música clásica.</p>
+                </div>
+                
+                <div class="mv-card">
+                    <div class="mv-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Nuestra Visión</h3>
+                    <p>Ser la tienda online de referencia para coleccionistas y amantes de la música, reconocida por nuestra especialización en géneros específicos y nuestra excelente experiencia de usuario.</p>
+                </div>
+                
+                <div class="mv-card">
+                    <div class="mv-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Nuestros Valores</h3>
+                    <p>Pasión por la música, innovación tecnológica, atención al detalle, trabajo en equipo y compromiso con la satisfacción de nuestros clientes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Botón flotante -->
+    <div id="chatToggle" class="chat-toggle">💬</div>
+
+    <!-- Panel de chat -->
+    <div id="chatPanel" class="chat-panel">
+        <div class="chat-header">
+            <span>Chat</span>
+            <button id="closeChat" class="close-chat">×</button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages"></div>
+
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" placeholder="Escribe un mensaje...">
+            <button id="sendChat">Enviar</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Space Sound</h3>
+                    <p>"La ciudad donde la música nunca deja de girar"</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="tienda.html">Tienda</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="preguntasfrecuentes.html">Preguntas Frecuentes</a></li>
+                        <li><a href="contactanos.html">Contáctanos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Síguenos</h3>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=100083262605033&locale=es_LA"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/space_sound_of/"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://x.com/SpaceSoundMx"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>talesturntable@gmail.com</p>
+                    <p>+1 234 567 8900</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p class="copy">© 2025 SpaceSound. ProyectoFinal Programación de Sistemas Web.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="javascript/index.js"></script>
+    <script src="javascript/carrito.js"></script>
+    <script src="javascript/chat.js"></script>
+</body>
+</html>
