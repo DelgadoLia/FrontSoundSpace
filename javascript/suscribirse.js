@@ -36,13 +36,13 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = true;
             
             try {
-                const response = await fetch('http://localhost:3000/api/correo/suscripcion', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email: email })
-                });
+                const response = await fetch('https://backspundspace.onrender.com/api/correo/suscripcion', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: email })
+});
                 
                 const resultado = await response.json();
                 

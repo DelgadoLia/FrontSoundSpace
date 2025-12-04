@@ -1,5 +1,5 @@
 // URL de tu API - ajusta según tu configuración
-const API_URL = 'http://localhost:3000/api/productos';
+const API_URL = 'https://backspundspace.onrender.com/api/productos';
 
 // Variable global para la instancia del chart
 let salesChartInstance = null;

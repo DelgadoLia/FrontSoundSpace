@@ -127,9 +127,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const apiOrigin = (location.protocol === 'file:') ? 'http://localhost:3000' : `${location.protocol}//${location.host}`;
-        const primary = `${apiOrigin}/api/carrito/${usuario.id}`;
-        const fallback = `http://localhost:3000/api/carrito/${usuario.id}`;
+const apiOrigin = (location.protocol === 'file:') ? 'https://backspundspace.onrender.com' : `${location.protocol}//${location.host}`;
+const primary = `${apiOrigin}/api/carrito/${usuario.id}`;
+const fallback = `https://backspundspace.onrender.com/api/carrito/${usuario.id}`;
 
         try {
             const token = localStorage.getItem('token');
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = { usuario_id: usuario.id };
             const apiOrigin = (location.protocol === 'file:') ? 'http://localhost:3000' : `${location.protocol}//${location.host}`;
             const primary = `${apiOrigin}/api/nota/compra`;
-            const fallback = 'http://localhost:3000/api/nota/compra';
+const fallback = 'https://backspundspace.onrender.com/api/nota/compra';
         // Podríamos extraer más campos si es necesario
 
         try {

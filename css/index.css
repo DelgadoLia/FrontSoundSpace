@@ -111,7 +111,7 @@ nav ul li a:hover::after {
 .hero {
     height: 100vh;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                url("http://localhost:3000/uploads/fondo.jpg") no-repeat center center/cover;
+                url("https://backspundspace.onrender.com/uploads/fondo.jpg") no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -481,8 +481,8 @@ footer {
 /* TIENDA */
 .tienda-hero {
     height: 50vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                url("http://localhost:3000/uploads/fondo.jpg") no-repeat center center/cover;
+     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                url("https://backspundspace.onrender.com/uploads/fondo.jpg") no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -838,7 +838,7 @@ footer {
 .faq-hero {
     height: 40vh;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                url("http://localhost:3000/uploads/fondo.jpg") no-repeat center center/cover;
+                url("https://backspundspace.onrender.com/uploads/fondo.jpg") no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1089,18 +1089,19 @@ footer {
     }
 }
 
-/* Contactanos*/
 /* Hero Section Contacto */
 .contact-hero {
     height: 40vh;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                url("http://localhost:3000/uploads/fondo.jpg") no-repeat center center/cover;
+                url("https://backspundspace.onrender.com/uploads/fondo.jpg") no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     padding-top: 80px;
 }
+
+/* Resto del código CSS que ya tienes... */
 
 /* Información de Contacto */
 .contact-info {
@@ -1401,8 +1402,8 @@ footer {
 /* Hero Section Nosotros */
 .about-hero {
     height: 40vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                url("http://localhost:3000/uploads/fondo.jpg") no-repeat center center/cover;
+background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+            url("https://backspundspace.onrender.com/uploads/fondo.jpg") no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1749,7 +1750,7 @@ footer {
 .login-hero {
     height: 30vh;
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                url("http://localhost:3000/uploads/fondo.jpg") no-repeat center center/cover;
+                url("https://backspundspace.onrender.com/uploads/fondo.jpg") no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1918,7 +1919,7 @@ footer {
     flex-wrap: wrap;
     gap: 15px;
 }
-
+panchaperro
 .forgot-password {
     color: #ff5252;
     text-decoration: none;

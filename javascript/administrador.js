@@ -33,14 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // - `cachedProducts` almacena los productos cargados desde la API para búsquedas y render
     // - `apiOrigin` y `API_URL` determinan el origen de la API según cómo se sirva la página (file:// vs http)
     let cachedProducts = [];
-    const apiOrigin = (location.protocol === 'file:') ? 'http://localhost:3000' : `${location.protocol}//${location.host}`;
-    // Inventario ahora via admin
-    const API_URL = `${apiOrigin}/api/admin/inventario`;
-    const FALLBACK_API_URL = 'http://localhost:3000/api/admin/inventario';
-    // Endpoint para ventas totales (suma monetaria)
-    const TOTALSALES_API_URL = `${apiOrigin}/api/admin/totalventas`;
-    const FALLBACK_TOTALSALES_API_URL = 'http://localhost:3000/api/admin/totalventas';
-
+    const apiOrigin = (location.protocol === 'file:') ? 'https://backspundspace.onrender.com' : `${location.protocol}//${location.host}`;
+const API_URL = `${apiOrigin}/api/admin/inventario`;
+const FALLBACK_API_URL = 'https://backspundspace.onrender.com/api/admin/inventario';
+const TOTALSALES_API_URL = `${apiOrigin}/api/admin/totalventas`;
+const FALLBACK_TOTALSALES_API_URL = 'https://backspundspace.onrender.com/api/admin/totalventas';
     console.info('API origin:', apiOrigin, 'API_URL:', API_URL, 'FALLBACK_API_URL:', FALLBACK_API_URL); // Debug info
 
     // Cargar productos desde la API y actualizar tabla
@@ -150,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Se asume que las imágenes se sirven desde /uploads
         const src = `${apiOrigin}/uploads/${imgName}`;
         // Devuelve una etiqueta <img> con tamaño reducido como vista previa; si falla se intenta cargar desde el backend
-        const fallbackSrc = `http://localhost:3000/uploads/${imgName}`;
+        const fallbackSrc = `https://backspundspace.onrender.com/uploads/${imgName}`;
         return `<img src="${src}" alt="${imgName}" style="max-width:48px; height:auto;" onerror="this.onerror=null; this.src='${fallbackSrc}'"> ${imgName}`;
     }
 
@@ -320,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (imagen) formData.append('imagen', imagen);
 
         // Construir payload y URLs
-        const fallbackAdminUrl = `http://localhost:3000/api/admin/inventario`;
+        const fallbackAdminUrl = `https://backspundspace.onrender.com/api/admin/inventario`;
 
         // 3. Llamar a la nueva función de fetch con FormData
         addProductFormDataFetch(`${apiOrigin}/api/admin/inventario`, fallbackAdminUrl, formData);        
@@ -415,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             const primary = `${apiOrigin}/api/admin/inventario/${id}`;
-            const fallback = `http://localhost:3000/api/admin/inventario/${id}`;
+const fallback = `https://backspundspace.onrender.com/api/admin/inventario/${id}`;
             try {
                 // Si se seleccionó un archivo, enviamos FormData (para permitir subir nueva imagen)
                 const imageFileEl = form.querySelector('#m-image-file');
@@ -523,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             const primary = `${apiOrigin}/api/admin/inventario/${id}`;
-            const fallback = `http://localhost:3000/api/admin/inventario/${id}`;
+const fallback = `https://backspundspace.onrender.com/api/admin/inventario/${id}`;
             try {
                 let resp = await fetch(primary, { method: 'DELETE' });
                 if (!resp.ok) {

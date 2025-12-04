@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("[admin_chat.js] cargarTodos -> /api/chat-admin/todos");
         adminList.innerHTML = '<div class="loading">Cargando mensajes...</div>';
         try {
-            const res = await fetch("http://localhost:3000/api/chat-admin/todos", {
-                headers: { 'Authorization': 'Bearer ' + token }
-            });
+            const res = await fetch("https://backspundspace.onrender.com/api/chat-admin/todos", {
+    headers: { 'Authorization': 'Bearer ' + token }
+});
             const json = await res.json();
             console.log("[admin_chat.js] respuesta todos:", json);
             if (!res.ok) {
@@ -82,14 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log("[admin_chat.js] Enviando respuesta id:", id, respuesta);
 
                     try {
-                        const r = await fetch(`http://localhost:3000/api/chat-admin/responder/${id}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Bearer ' + token
-                            },
-                            body: JSON.stringify({ respuesta })
-                        });
+                        const r = await fetch(`https://backspundspace.onrender.com/api/chat-admin/responder/${id}`, {
+    method: 'PUT',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify({ respuesta })
+});
                         const j = await r.json();
                         console.log("[admin_chat.js] respuesta guardar:", j);
                         if (!r.ok) {

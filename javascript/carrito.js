@@ -5,15 +5,31 @@
 */
 
 (function() {
-    const apiOrigin = (location.protocol === 'file:') ? 'http://localhost:3000' : `${location.protocol}//${location.host}`;
-    const primaryBase = `${apiOrigin}/api/carrito`;
-    const fallbackBase = 'http://localhost:3000/api/carrito';
-    const cuponBase = `${apiOrigin}/api/cupones`;
-    const cuponFallback = 'http://localhost:3000/api/cupones';
+    const apiOrigin = (location.protocol === 'file:') ? 'https://backspundspace.onrender.com' : `${location.protocol}//${location.host}`;
+const primaryBase = `${apiOrigin}/api/carrito`;
+const fallbackBase = 'https://backspundspace.onrender.com/api/carrito';
+const cuponBase = `${apiOrigin}/api/cupones`;
+const cuponFallback = 'https://backspundspace.onrender.com/api/cupones';
 
     // Variables para almacenar el cupón actual
     let cuponActual = null;
     let descuentoAplicado = 0;
+
+    // Función para obtener headers con autorización
+    function getHeaders(contentType = false) {
+        const token = localStorage.getItem('token');
+        const headers = {};
+        
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        
+        if (contentType) {
+            headers['Content-Type'] = 'application/json';
+        }
+        
+        return headers;
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
         initCartPage();
@@ -61,9 +77,7 @@
             const url = `${cuponBase}/validar`;
             let resp = await fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: getHeaders(true),
                 body: JSON.stringify({ codigo })
             });
 
@@ -71,9 +85,7 @@
             if (!resp.ok) {
                 resp = await fetch(`${cuponFallback}/validar`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: getHeaders(true),
                     body: JSON.stringify({ codigo })
                 });
             }
@@ -178,28 +190,25 @@
     async function loadCartItems(usuarioId) {
         const url = `${primaryBase}/${usuarioId}`;
         try {
-            // Obtener token del localStorage
-            const token = localStorage.getItem('token');
+            const resp = await fetch(url, { headers: getHeaders() });
             
-            const headers = {};
-            if (token) {
-                headers['Authorization'] = `Bearer ${token}`;
+            if (!resp.ok) {
+                // Intentar con fallback
+                const respFallback = await fetch(`${fallbackBase}/${usuarioId}`, { headers: getHeaders() });
+                if (!respFallback.ok) {
+                    const text = await respFallback.text();
+                    throw new Error(`HTTP ${respFallback.status} - ${text}`);
+                }
+                
+                const data = await respFallback.json();
+                if (!data.success) {
+                    showMessage('No se pudo cargar el carrito.');
+                    return;
+                }
+                renderCartItems(data.data);
+                return;
             }
             
-            let resp = await fetch(url, { headers });
-            if (!resp.ok) {
-<<<<<<< HEAD
-                // intentar con fallback
-                resp = await fetch(`${fallbackBase}/${usuarioId}`);
-=======
-                // try fallback
-                resp = await fetch(`${fallbackBase}/${usuarioId}`, { headers });
->>>>>>> 972e8c532c3e23d4392056306b2036fa630a7944
-            }
-            if (!resp.ok) {
-                const text = await resp.text();
-                throw new Error(`HTTP ${resp.status} - ${text}`);
-            }
             const data = await resp.json();
             if (!data.success) {
                 showMessage('No se pudo cargar el carrito.');
@@ -248,7 +257,7 @@
 
             cartItemEl.innerHTML = `
                 <div class="cart-col product-col">
-                    <img src="${apiOrigin}/uploads/${item.nombre_imagen}" alt="${item.titulo}" class="cart-item-img" onerror="this.onerror=null; this.src='http://localhost:3000/uploads/${item.nombre_imagen}'">
+                   <img src="${apiOrigin}/uploads/${item.nombre_imagen}" alt="${item.titulo}" class="cart-item-img" onerror="this.onerror=null; this.src='https://backspundspace.onrender.com/uploads/${item.nombre_imagen}'">
                     <div class="item-info">
                         <h4>${item.titulo}</h4>
                         <p>${item.artista}</p>
@@ -332,7 +341,6 @@
     async function updateItemQuantity(carritoId, cantidad) {
         const url = `${primaryBase}/${carritoId}`;
         try {
-<<<<<<< HEAD
             // Incluir nombre_imagen si está presente en la fila
             const cartRow = document.querySelector(`.cart-item[data-carrito-id="${carritoId}"]`);
             const nombre_imagen = cartRow ? cartRow.dataset.nombreImagen : undefined;
@@ -340,36 +348,18 @@
             
             if (typeof nombre_imagen !== 'undefined' && nombre_imagen !== null && nombre_imagen !== '') {
                 body.nombre_imagen = nombre_imagen;
-=======
-                // Obtener token del localStorage
-                const token = localStorage.getItem('token');
-                
-                const headers = { 'Content-Type': 'application/json' };
-                if (token) {
-                    headers['Authorization'] = `Bearer ${token}`;
-                }
-                
-                // Include nombre_imagen if present on the row
-                const cartRow = document.querySelector(`.cart-item[data-carrito-id="${carritoId}"]`);
-                const nombre_imagen = cartRow ? cartRow.dataset.nombreImagen : undefined;
-                let body = { cantidad };
-                if (typeof nombre_imagen !== 'undefined' && nombre_imagen !== null && nombre_imagen !== '') body.nombre_imagen = nombre_imagen;
-                let resp = await fetch(url, { method: 'PUT', headers, body: JSON.stringify(body) });
-                if (!resp.ok) {
-                resp = await fetch(`${fallbackBase}/${carritoId}`, { method: 'PUT', headers, body: JSON.stringify(body) });
->>>>>>> 972e8c532c3e23d4392056306b2036fa630a7944
             }
             
             let resp = await fetch(url, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getHeaders(true),
                 body: JSON.stringify(body)
             });
             
             if (!resp.ok) {
                 resp = await fetch(`${fallbackBase}/${carritoId}`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: getHeaders(true),
                     body: JSON.stringify(body)
                 });
             }
@@ -403,18 +393,12 @@
     async function removeItem(carritoId) {
         const url = `${primaryBase}/${carritoId}`;
         try {
-            // Obtener token del localStorage
-            const token = localStorage.getItem('token');
+            let resp = await fetch(url, { method: 'DELETE', headers: getHeaders() });
             
-            const headers = {};
-            if (token) {
-                headers['Authorization'] = `Bearer ${token}`;
-            }
-            
-            let resp = await fetch(url, { method: 'DELETE', headers });
             if (!resp.ok) {
-                resp = await fetch(`${fallbackBase}/${carritoId}`, { method: 'DELETE', headers });
+                resp = await fetch(`${fallbackBase}/${carritoId}`, { method: 'DELETE', headers: getHeaders() });
             }
+            
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             
             // Eliminar fila del DOM

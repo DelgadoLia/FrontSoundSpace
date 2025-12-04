@@ -10,11 +10,11 @@ document.getElementById("contactForm").addEventListener("submit", async (e) => {
     };
 
     try {
-        const response = await fetch("http://localhost:3000/api/correo/contacto", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        });
+        const response = await fetch("https://backspundspace.onrender.com/api/correo/contacto", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+});
         
         const result = await response.json();
 
