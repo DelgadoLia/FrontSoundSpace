@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 contrasena,
             };
 
-            const respuesta = await fetch("http://localhost:3000/api/usuarios/registrar", {
+            const respuesta = await fetch("https://backspundspace.onrender.com/api/usuarios/registrar", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
@@ -287,7 +287,7 @@ let captchaId = null;
 
 async function cargarCaptcha() {
     try {
-        const res = await fetch("http://localhost:3000/api/captcha/generar");
+        const res = await fetch("https://backspundspace.onrender.com/api/captcha/generar");
         if (!res.ok) {
             console.warn('Captcha endpoint returned', res.status);
             return;
@@ -310,10 +310,6 @@ function refreshCaptcha() {
 
 window.addEventListener("DOMContentLoaded", cargarCaptcha);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD
-=======
-/*PARA LOGIN*/
->>>>>>> 972e8c532c3e23d4392056306b2036fa630a7944
 /*PARA LOGIN*/
 async function loginUsuario() {
     const nombreUsuario = document.getElementById("login-username").value;
@@ -338,7 +334,7 @@ async function loginUsuario() {
     }
 
     // Primero validar captcha en backend
-    const validar = await fetch("http://localhost:3000/api/captcha/validar", {
+    const validar = await fetch("https://backspundspace.onrender.com/api/captcha/validar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -370,7 +366,7 @@ async function loginUsuario() {
     // Si el captcha ya pasó, ahora sí enviar login
     const data = { nombreUsuario, contrasena };
 
-    const respuesta = await fetch("http://localhost:3000/api/usuarios/login", {
+    const respuesta = await fetch("https://backspundspace.onrender.com/api/usuarios/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -443,10 +439,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const panelNombre = document.getElementById("panel-nombre");
         const panelRol = document.getElementById("panel-rol");
 
-        if (accountName) accountName.textContent = usuario.username;
-        if (panelUsername) panelUsername.textContent = usuario.username;
-        if (panelNombre) panelNombre.textContent = usuario.nombreCompleto;
-        if (panelRol) panelRol.textContent = usuario.rol;
+        if (accountName) accountName.textContent = usuario.username || "";
+        if (panelUsername) panelUsername.textContent = usuario.username || "";
+        if (panelNombre) panelNombre.textContent = usuario.nombreCompleto || "";
+        if (panelRol) panelRol.textContent = usuario.rol || "";
     }
 
     // Abrir panel
@@ -462,37 +458,6 @@ document.addEventListener("DOMContentLoaded", () => {
             accountPanel.classList.remove("active");
         });
     }
-<<<<<<< HEAD
-
-    // Logout
-    // Logout CORREGIDO
-if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-        // Mostrar SweetAlert primero
-        Swal.fire({
-            title: 'Sesión cerrada correctamente',
-            text: 'Gracias por visitarnos',
-            icon: 'success',
-            confirmButtonText: 'Continuar',
-            showClass: {
-                popup: 'animate__animated animate__zoomIn'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__zoomOut'
-            }
-        }).then((result) => {
-            // Cuando el usuario hace clic en "Continuar", ejecutar el logout
-            if (result.isConfirmed) {
-                localStorage.removeItem("usuario");
-                localStorage.removeItem("token");
-                localStorage.removeItem("rol"); // También remover el rol si existe
-                window.location.href = "paginaprincipal.html";
-            }
-        });
-    });
-}
-});
-=======
 });
 
 //LOGOUT
@@ -521,7 +486,7 @@ if (logoutBtn) {
                 try {
                     // Notificar al servidor (de la versión 2)
                     if (token) {
-                        await fetch("http://localhost:3000/api/usuarios/logout", {
+                        await fetch("https://backspundspace.onrender.com/api/usuarios/logout", {
                             method: "POST",
                             headers: {
                                 "Authorization": "Bearer " + token
@@ -563,7 +528,6 @@ if (logoutBtn) {
 }
 //////////////////////////////////////////////////////////////////////////////////////7
 
->>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
 
 //Funcionalidad para Preguntas Frecuentes (que se desplieguen)
 document.addEventListener('DOMContentLoaded', function() {
@@ -678,7 +642,7 @@ document.addEventListener('DOMContentLoaded', function() {
 const productosAPI = {
     async getProductos() {
         try {
-            const response = await fetch("http://localhost:3000/api/productos", {
+            const response = await fetch("https://backspundspace.onrender.com/api/productos", {
                 method: "GET",
                 headers: { "Content-Type": "application/json" }
             });
@@ -700,7 +664,7 @@ const productosAPI = {
 
     async getProductosOferta() {
         try {
-            const response = await fetch("http://localhost:3000/api/productos", {
+            const response = await fetch("https://backspundspace.onrender.com/api/productos", {
                 method: "GET",
                 headers: { "Content-Type": "application/json" }
             });
@@ -721,7 +685,7 @@ const productosAPI = {
 
     async getProductosByGenero(genero) {
         try {
-            const response = await fetch(`http://localhost:3000/api/productos/genero/${genero}`, {
+            const response = await fetch(`https://backspundspace.onrender.com/api/productos/genero/${genero}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" }
             });
@@ -760,10 +724,10 @@ function mostrarProductosOferta(productos, contenedorId) {
             <span class="producto-badge oferta-badge">🔥 OFERTA</span>
             ${producto.ventas > 10 ? '<span class="producto-badge popular-badge">Popular</span>' : ''}
             
-            <img src="http://localhost:3000/uploads/${producto.imagen}" 
+            <img src="https://backspundspace.onrender.com/uploads/${producto.imagen}" 
                  alt="${producto.titulo}" 
                  class="producto-img"
-                 onerror="this.src='http://localhost:3000/uploads/${producto.imagen}'">
+                 onerror="this.src='https://backspundspace.onrender.com/uploads/${producto.imagen}'">
             
             <div class="producto-info">
                 <h3>${producto.titulo}</h3>
@@ -852,79 +816,6 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
         productoId
     };
     
-<<<<<<< HEAD
-=======
-    console.log("Producto añadido al carrito (UI):", producto);
-
-    // Llamar a la API para guardar en la tabla carrito: { usuario_id, producto_id, cantidad }
-    const apiOrigin = (location.protocol === 'file:') ? 'http://localhost:3000' : `${location.protocol}//${location.host}`;
-    const primary = `${apiOrigin}/api/carrito/add`;
-    const fallback = 'http://localhost:3000/api/carrito/add';
-
-    const imagenUrlCompleta = document.getElementById("modalImagen").src;
-
-    // Función que extrae solo el nombre del archivo:
-    function getFileNameFromUrl(url) {
-        if (!url) return '';
-        // Reemplaza barras invertidas por normales (por si acaso) y luego divide por el separador '/'
-        const parts = url.replace(/\\/g, '/').split('/');
-        // Devuelve el último elemento, que es el nombre del archivo
-        return parts.pop();
-    }
-
-    const nombreImagenLimpio = getFileNameFromUrl(imagenUrlCompleta);
-    
-    const payload = {
-        usuario_id: usuario.id,
-        producto_id: Number(productoId),
-        cantidad: Number(cantidad),
-        nombre_imagen: nombreImagenLimpio
-    };
-
-    try {
-        const token = localStorage.getItem("token");
-        
-        const headers = {
-            'Content-Type': 'application/json'
-        };
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
-        }
-        
-        let resp = await fetch(primary, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(payload)
-        });
-        if (!resp.ok) {
-            console.warn(`POST carrito add respondió ${resp.status} en primary, intentando fallback`);
-            resp = await fetch(fallback, { method: 'POST', headers: headers, body: JSON.stringify(payload) });
-        }
-        if (!resp.ok) {
-            const text = await resp.text();
-            throw new Error(`HTTP ${resp.status} - ${text}`);
-        }
-        const data = await resp.json();
-        if (data && data.success) {
-            console.info('Carrito actualizado en backend:', data);
-            actualizarContadorCarritoDesdeBackend(usuario.id);
-        } else {
-            console.warn('Respuesta inesperada al añadir al carrito:', data);
-        }
-    } catch (err) {
-        console.error('Error al almacenar en carrito:', err);
-    }
-    
-    // Mostrar mensaje de confirmación
-    const originalText = this.innerHTML;
-    this.innerHTML = '<i class="fas fa-check"></i> Añadido al Carrito';
-    this.style.background = '#4CAF50';
-    
-    setTimeout(() => {
-        this.innerHTML = originalText;
-        this.style.background = '#ff5252';
-    }, 2000);
->>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
     // Aquí puedes agregar la lógica para añadir al carrito
     Swal.fire({
         title: 'Producto añadido al carrito',
@@ -950,7 +841,7 @@ async function actualizarContadorCarritoDesdeBackend(usuarioId) {
             headers['Authorization'] = `Bearer ${token}`;
         }
         
-        const resp = await fetch(`http://localhost:3000/api/carrito/${usuarioId}`, { headers });
+        const resp = await fetch(`https://backspundspace.onrender.com/api/carrito/${usuarioId}`, { headers });
         if (!resp.ok) {
             console.error("Error en respuesta del carrito:", resp.status);
             return;
@@ -998,10 +889,10 @@ function mostrarProductos(productos, contenedorId) {
             ${tieneOferta ? '<span class="producto-badge oferta-badge">🔥 OFERTA</span>' : ''}
             ${producto.ventas > 10 ? '<span class="producto-badge popular-badge">Popular</span>' : ''}
             
-            <img src="http://localhost:3000/uploads/${producto.imagen}" 
+            <img src="https://backspundspace.onrender.com/uploads/${producto.imagen}" 
                  alt="${producto.titulo}" 
                  class="producto-img"
-                 onerror="this.src='http://localhost:3000/uploads/${producto.imagen}'">
+                 onerror="this.src='https://backspundspace.onrender.com/uploads/${producto.imagen}'">
             
             <div class="producto-info">
                 <h3>${producto.titulo}</h3>
@@ -1086,14 +977,8 @@ function configurarFiltros() {
     });
 }
 
-<<<<<<< HEAD
-// Función para abrir el modal con datos del producto - VERSIÓN CORREGIDA
-// Función para abrir el modal con datos del producto - VERSIÓN CORREGIDA
-function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta) {
-=======
 // Función para abrir el modal con datos del producto 
 function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponibilidadTexto, categoria, imagen, artista, oferta, precioOriginal, porcentajeOferta, productoId) {
->>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
     console.log("Datos del producto para modal:", { 
         nombre, 
         oferta, 
@@ -1111,7 +996,7 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
     // Actualizar contenido del modal
     document.getElementById('modalNombre').textContent = nombre;
     document.getElementById('modalDescripcion').textContent = descripcion;
-    document.getElementById('modalImagen').src = `http://localhost:3000/uploads/${imagen}`;
+    document.getElementById('modalImagen').src = `https://backspundspace.onrender.com/uploads/${imagen}`;
     document.getElementById('modalDisponibilidad').textContent = disponibilidadTexto;
     document.getElementById('modalCategoria').textContent = categoria;
     
@@ -1166,15 +1051,12 @@ function abrirModalProducto(nombre, descripcion, precio, disponibilidad, disponi
         console.log("Modal abierto correctamente. Existencias:", existencias);
     } else {
         console.error("No se encontró el modal");
-<<<<<<< HEAD
-=======
     }
     // Guardar id y nombre_imagen (archivo) para el botón de agregar al carrito
     if (agregarBtn) {
         agregarBtn.dataset.productoId = productoId || '';
         // 'imagen' es el filename (dataset.imagen), no la URL; si se pasa URL, extract filename
         agregarBtn.dataset.nombreImagen = imagen || '';
->>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
     }
 }
 
@@ -1673,11 +1555,7 @@ window.mostrarTodosProductos = function() {
     if (noResults) noResults.remove();
     if (contador) contador.remove();
     
-<<<<<<< HEAD
     console.log("🔄 Búsqueda limpiada - Mostrando todos los productos");
-=======
-    console.log("Búsqueda limpiada - Mostrando todos los productos");
->>>>>>> 3250fed183e4b252518b24847750b1bef7e2313e
 };
 
 // Remover resaltado de términos - MEJORADA
@@ -2037,7 +1915,7 @@ async function verifySecurityQuestion() {
 
     try {
         // Llamar a la API para verificar la pregunta de seguridad
-        const response = await fetch("http://localhost:3000/api/usuarios/recuperar", {
+        const response = await fetch("https://backspundspace.onrender.com/api/usuarios/recuperar", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -2151,7 +2029,7 @@ async function verCategoria(genero) {
     contenedor.innerHTML = '<p class="loading-products">Cargando productos...</p>';
 
     try {
-        const respuesta = await fetch(`http://localhost:3000/api/productos/genero/${genero}`);
+        const respuesta = await fetch(`https://backspundspace.onrender.com/api/productos/genero/${genero}`);
         const data = await respuesta.json();
 
         if (!data.success || data.count === 0) {
@@ -2162,7 +2040,7 @@ async function verCategoria(genero) {
         // Mostrar productos
         contenedor.innerHTML = data.data.map(producto => `
             <div class="producto-card">
-                <img src="http://localhost:3000/uploads/${producto.imagen}" alt="${producto.titulo}">
+                <img src="https://backspundspace.onrender.com/uploads/${producto.imagen}" alt="${producto.titulo}">
                 <h3>${producto.titulo}</h3>
                 <p>Artista: ${producto.artista}</p>
                 <p>Precio: $${producto.precio}</p>
