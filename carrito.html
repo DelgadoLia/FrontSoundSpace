@@ -171,13 +171,12 @@
                 
                 <div class="cart-summary-card">
                     <h2>Resumen del Pedido</h2>
-<!-- Por esto: -->
-<div class="coupon-section">
-    <label for="coupon-code">Cupón de Descuento:</label>
-    <div class="coupon-input-group">
-        <input type="text" id="coupon-code" placeholder="Ej: COMPRA1">
-        <button class="btn-apply-coupon">Aplicar</button>
-    </div>
+                    <div class="coupon-section">
+                        <label for="coupon-code">Cupón de Descuento:</label>
+                        <div class="coupon-input-group">
+                            <input id="cuponInput" placeholder="Cupón" class="input">
+                            <button onclick="aplicarCupon()">Usar cupón</button>
+                        </div>
     <p class="coupon-message"></p> <!-- Este elemento se llenará dinámicamente -->
 </div>
 
