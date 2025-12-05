@@ -34,10 +34,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // - `apiOrigin` y `API_URL` determinan el origen de la API según cómo se sirva la página (file:// vs http)
     let cachedProducts = [];
     const apiOrigin = (location.protocol === 'file:') ? 'https://backspundspace.onrender.com' : `${location.protocol}//${location.host}`;
-const API_URL = `${apiOrigin}/api/admin/inventario`;
-const FALLBACK_API_URL = 'https://backspundspace.onrender.com/api/admin/inventario';
-const TOTALSALES_API_URL = `${apiOrigin}/api/admin/totalventas`;
-const FALLBACK_TOTALSALES_API_URL = 'https://backspundspace.onrender.com/api/admin/totalventas';
+    // Inventario ahora via admin
+    const API_URL = `${apiOrigin}/api/admin/inventario`;
+    const FALLBACK_API_URL = 'https://backspundspace.onrender.com/api/admin/inventario';
+    // Endpoint para ventas totales (suma monetaria)
+    const TOTALSALES_API_URL = `${apiOrigin}/api/admin/totalventas`;
+    const FALLBACK_TOTALSALES_API_URL = 'https://backspundspace.onrender.com/api/admin/totalventas';
+
     console.info('API origin:', apiOrigin, 'API_URL:', API_URL, 'FALLBACK_API_URL:', FALLBACK_API_URL); // Debug info
 
     // Cargar productos desde la API y actualizar tabla
@@ -77,24 +80,58 @@ const FALLBACK_TOTALSALES_API_URL = 'https://backspundspace.onrender.com/api/adm
         }
     }
 
+    // fetchTotalSales: obtiene el monto total de ventas desde el backend (/api/admin/totalventas) y actualiza la vista
+    // async function fetchTotalSales() {
+    //     const totalSalesEl = document.getElementById('total-sales');
+    //     if (!totalSalesEl) return;
+    //     try {
+    //         let resp = await fetch(TOTALSALES_API_URL);
+    //         if (!resp.ok) {
+    //             console.warn(`GET totalventas falló con ${resp.status}, intentando fallback`);
+    //             resp = await fetch(FALLBACK_TOTALSALES_API_URL);
+    //         }
+    //         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    //         const data = await resp.json();
+    //         if (data && typeof data.total !== 'undefined') {
+    //             totalSalesEl.textContent = `$${Number(data.total).toFixed(2)}`;
+    //         } else if (Array.isArray(data)) {
+    //             // Si el endpoint devolviera array de productos, calcular localmente
+    //             const total = data.reduce((acc, p) => acc + (Number(p.precio || p.Precio || 0) * Number(p.ventas || p.Ventas || 0)), 0);
+    //             totalSalesEl.textContent = `$${total.toFixed(2)}`;
+    //         }
+    //     } catch (err) {
+    //         console.error('Error al obtener ventas totales:', err);
+    //     }
+    //}
+
     async function fetchTotalSales() {
-        const totalSalesEl = document.getElementById("total-sales");
-        if (!totalSalesEl) return;
-        try {
-            let resp = await fetch(TOTALSALES_API_URL);
-            if (!resp.ok) resp = await fetch(FALLBACK_TOTALSALES_API_URL);
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-            const data = await resp.json();
-            if (data && data.success && data.total !== undefined) {
-                totalSalesEl.textContent = `$${Number(data.total).toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-            } else {
-                totalSalesEl.textContent = '$0.00';
-            }
-        } catch (err) {
-            console.error('Error obteniendo ventas totales:', err);
-            totalSalesEl.textContent = '$0.00';
+    try {
+        const response = await fetch("https://backspundspace.onrender.com/api/productos");
+        const data = await response.json();
+
+        console.log("Productos cargados:", data);
+
+        if (response.ok) {
+            const totalSalesEl = document.getElementById("total-sales");
+            if (!totalSalesEl) return;
+
+            let total = 0;
+
+            data.forEach((producto) => {
+                const precio = Number(producto.precio || 0);
+                const vendidos = Number(producto.vendidos || 0);
+
+                total += precio * vendidos;
+            });
+
+            totalSalesEl.textContent = `$${total.toFixed(2)}`;
+        } else {
+            console.error("Error al obtener productos:", data.mensaje);
         }
+    } catch (error) {
+        console.error("Error de conexión:", error);
     }
+}
 
 
     // renderProductos: Dibuja filas <tr> y celdas <td> en la tabla de inventario
@@ -320,9 +357,100 @@ const FALLBACK_TOTALSALES_API_URL = 'https://backspundspace.onrender.com/api/adm
         const fallbackAdminUrl = `https://backspundspace.onrender.com/api/admin/inventario`;
 
         // 3. Llamar a la nueva función de fetch con FormData
-        addProductFormDataFetch(`${apiOrigin}/api/admin/inventario`, fallbackAdminUrl, formData);        
-        });
-    }
+        addProductFormDataFetch(`${apiOrigin}/api/admin/inventario`, fallbackAdminUrl, formData);
+
+        // Llamar a la API para añadir el producto; si falla en origen, intentar fallback (POST JSON)
+        /*async function addProductFetch(primary, fallback, payload) {
+            try {
+                console.info('Intentando añadir producto en:', primary);
+                let resp = await fetch(primary, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!resp.ok) {
+                    console.warn(`Respuesta ${resp.status} desde ${primary}, intentando fallback ${fallback}`);
+                    resp = await fetch(fallback, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                }
+                if (!resp.ok) {
+                    const text = await resp.text();
+                    throw new Error(`HTTP ${resp.status} - ${text}`);
+                }
+
+                // Intentar parsear como JSON; si no es JSON, fallo manejable
+                let data;
+                try {
+                    data = await resp.json();
+                } catch (parseErr) {
+                    const rawText = await resp.text();
+                    throw new Error(`La respuesta no es JSON válido: ${parseErr.message}. Contenido: ${rawText}`);
+                }
+
+                if (data && data.success) {
+                    Swal.fire({
+                    title: 'Producto añadido',
+                    text: 'Se añadio el producto con exito',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                });
+                    loadProducts();
+                    form.reset();
+                } else {
+                    Swal.fire({
+                    title: 'Error al añadir el producto',
+                    text: 'Por favor, intentelo de nuevo',
+                    icon: 'error',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
+                }
+            } catch (err) {
+                console.error('Error al añadir producto:', err);
+                Swal.fire({
+                    title: 'Error al añadir el producto',
+                    text: 'Por favor, intentelo de nuevo',
+                    icon: 'error',
+                    confirmButtonText: 'Continuar',
+                    showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+                    });
+            }
+        }
+
+        const payload = {
+            titulo,
+            artista,
+            descripcion,
+            precio: Number(precio) || 0,
+            disponibilidad: Number(disponibilidad) || 0,
+            genero,
+            ventas: Number(ventas) || 0,
+            imagen,
+            oferta: Number(oferta) || 0
+        };
+
+        addProductFetch(`${apiOrigin}/api/admin/inventario`, fallbackAdminUrl, payload);*/
+            });
+        }
 
     // Manejar submit del formulario (tecla Enter) fuera del click para evitar listeners duplicados
     const addForm = document.getElementById('add-product-form');
@@ -412,7 +540,7 @@ const FALLBACK_TOTALSALES_API_URL = 'https://backspundspace.onrender.com/api/adm
             };
 
             const primary = `${apiOrigin}/api/admin/inventario/${id}`;
-const fallback = `https://backspundspace.onrender.com/api/admin/inventario/${id}`;
+            const fallback = `https://backspundspace.onrender.com/api/admin/inventario/${id}`;
             try {
                 // Si se seleccionó un archivo, enviamos FormData (para permitir subir nueva imagen)
                 const imageFileEl = form.querySelector('#m-image-file');
@@ -520,7 +648,7 @@ const fallback = `https://backspundspace.onrender.com/api/admin/inventario/${id}
                 return;
             }
             const primary = `${apiOrigin}/api/admin/inventario/${id}`;
-const fallback = `https://backspundspace.onrender.com/api/admin/inventario/${id}`;
+            const fallback = `https://backspundspace.onrender.com/api/admin/inventario/${id}`;
             try {
                 let resp = await fetch(primary, { method: 'DELETE' });
                 if (!resp.ok) {

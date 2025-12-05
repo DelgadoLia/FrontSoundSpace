@@ -68,9 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
       const resp = await fetch(`https://backspundspace.onrender.com/api/chat/historial/${idUsuario}`, {
-    method: 'GET',
-    headers
-});
+        method: 'GET',
+        headers
+      });
 
       if (!resp.ok) {
         console.warn('[chat] respuesta no OK al obtener historial', resp.status);
@@ -123,10 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (token) headers['Authorization'] = `Bearer ${token}`;
 
       const resp = await fetch('https://backspundspace.onrender.com/api/chat/enviar', {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(payload)
-});
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload)
+      });
 
       if (!resp.ok) {
         console.error('[chat] /api/chat/enviar returned not ok', resp.status);

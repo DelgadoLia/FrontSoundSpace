@@ -310,6 +310,7 @@ function refreshCaptcha() {
 
 window.addEventListener("DOMContentLoaded", cargarCaptcha);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /*PARA LOGIN*/
 async function loginUsuario() {
     const nombreUsuario = document.getElementById("login-username").value;
@@ -423,6 +424,7 @@ async function loginUsuario() {
     });
 }
 
+
 //Para que se vea en todas las páginas la cuenta
 document.addEventListener("DOMContentLoaded", () => {
     const accountToggle = document.getElementById("accountToggle");
@@ -439,10 +441,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const panelNombre = document.getElementById("panel-nombre");
         const panelRol = document.getElementById("panel-rol");
 
-        if (accountName) accountName.textContent = usuario.username || "";
-        if (panelUsername) panelUsername.textContent = usuario.username || "";
-        if (panelNombre) panelNombre.textContent = usuario.nombreCompleto || "";
-        if (panelRol) panelRol.textContent = usuario.rol || "";
+        if (accountName) accountName.textContent = usuario.username;
+        if (panelUsername) panelUsername.textContent = usuario.username;
+        if (panelNombre) panelNombre.textContent = usuario.nombreCompleto;
+        if (panelRol) panelRol.textContent = usuario.rol;
     }
 
     // Abrir panel
@@ -520,7 +522,7 @@ if (logoutBtn) {
                     }
                 }).then(() => {
                     // Redirigir después del mensaje
-                    window.location.href = "index.html";
+                    window.location.href = "paginaprincipal.html";
                 });
             }
         });
@@ -803,11 +805,22 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
     const productoId = this.dataset.productoId || this.dataset.id;
     const usuario = JSON.parse(localStorage.getItem('usuario')) || null;
     if (!usuario) {
-        alert('Debes iniciar sesión para agregar productos al carrito.');
+        Swal.fire({
+            title: 'Debes iniciar secion para añadir producto',
+            text: 'Por favor, intentelo de nuevo',
+            icon: 'warning',
+            confirmButtonText: 'Reintentar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
+        
         return;
     }
     const cantidad = modalController ? modalController.getCantidad() : 1;
-    
     const producto = {
         nombre: document.getElementById("modalNombre").textContent,
         precio: document.getElementById("modalPrecio").textContent,
@@ -816,6 +829,67 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
         productoId
     };
     
+    console.log("Producto añadido al carrito (UI):", producto);
+
+    // Llamar a la API para guardar en la tabla carrito: { usuario_id, producto_id, cantidad }
+    const apiOrigin = (location.protocol === 'file:') ? 'https://backspundspace.onrender.com' : `${location.protocol}//${location.host}`;
+    const primary = `${apiOrigin}/api/carrito/add`;
+    const fallback = 'https://backspundspace.onrender.com/api/carrito/add';
+
+    const imagenUrlCompleta = document.getElementById("modalImagen").src;
+
+    // Función que extrae solo el nombre del archivo:
+    function getFileNameFromUrl(url) {
+        if (!url) return '';
+        // Reemplaza barras invertidas por normales (por si acaso) y luego divide por el separador '/'
+        const parts = url.replace(/\\/g, '/').split('/');
+        // Devuelve el último elemento, que es el nombre del archivo
+        return parts.pop();
+    }
+
+    const nombreImagenLimpio = getFileNameFromUrl(imagenUrlCompleta);
+    
+    const payload = {
+        usuario_id: usuario.id,
+        producto_id: Number(productoId),
+        cantidad: Number(cantidad),
+        nombre_imagen: nombreImagenLimpio
+    };
+
+    try {
+        let resp = await fetch(primary, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (!resp.ok) {
+            console.warn(`POST carrito add respondió ${resp.status} en primary, intentando fallback`);
+            resp = await fetch(fallback, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        }
+        if (!resp.ok) {
+            const text = await resp.text();
+            throw new Error(`HTTP ${resp.status} - ${text}`);
+        }
+        const data = await resp.json();
+        if (data && data.success) {
+            console.info('Carrito actualizado en backend:', data);
+            actualizarContadorCarritoDesdeBackend(usuario.id);
+        } else {
+            console.warn('Respuesta inesperada al añadir al carrito:', data);
+        }
+    } catch (err) {
+        console.error('Error al almacenar en carrito:', err);
+    }
+    
+    // Mostrar mensaje de confirmación
+    const originalText = this.innerHTML;
+    this.innerHTML = '<i class="fas fa-check"></i> Añadido al Carrito';
+    this.style.background = '#4CAF50';
+    
+    setTimeout(() => {
+        this.innerHTML = originalText;
+        this.style.background = '#ff5252';
+    }, 2000);
     // Aquí puedes agregar la lógica para añadir al carrito
     Swal.fire({
         title: 'Producto añadido al carrito',
@@ -834,22 +908,11 @@ document.querySelector(".btn-agregar-carrito").addEventListener("click", async f
 
 async function actualizarContadorCarritoDesdeBackend(usuarioId) {
     try {
-        const token = localStorage.getItem("token");
-        
-        const headers = {};
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
-        }
-        
-        const resp = await fetch(`https://backspundspace.onrender.com/api/carrito/${usuarioId}`, { headers });
-        if (!resp.ok) {
-            console.error("Error en respuesta del carrito:", resp.status);
-            return;
-        }
+        const resp = await fetch(`https://backspundspace.onrender.com/api/carrito/${usuarioId}`);
         const data = await resp.json();
 
         const cartCount = document.getElementById("cartCount");
-        if (cartCount && data.data && Array.isArray(data.data)) {
+        if (cartCount) {
             cartCount.textContent = data.data.length;
         }
     } catch (error) {
@@ -1363,6 +1426,66 @@ function copiarCupon() {
         console.error('Error al copiar: ', err);//
     });
 }
+
+async function aplicarCupon() {
+    const codigo = document.getElementById("cuponInput").value.trim();
+
+    if (!codigo) return Swal.fire({
+            title: 'Debes introducir un cupon',
+            text: 'Por favor, intentelo de nuevo',
+            icon: 'warning',
+            confirmButtonText: 'Reintentar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
+
+    const res = await fetch("https://backspundspace.onrender.com/api/cupones/validar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ codigo })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) return Swal.fire({
+            title: 'Error',
+            text: data.message,
+            icon: 'error',
+            confirmButtonText: 'Continuar',
+            confirmButtonColor: '#d33',
+            showClass: {
+                popup: 'animate__animated animate__zoomIn'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__zoomOut'
+            }
+    });
+
+
+    // Guardarlo temporalmente para el pago
+    localStorage.setItem("cupon", JSON.stringify({
+        codigo: data.cupon.codigo,
+        descuento: data.cupon.descuento
+    }));
+
+    Swal.fire({
+            title: 'Cupon aplicado',
+            text: " " + data.cupon.descuento + "%",
+            icon: 'success',
+            confirmButtonText: 'Reintentar',
+            showClass: {
+                        popup: 'animate__animated animate__zoomIn'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__zoomOut'
+                    }
+        });
+}
+
 // Función principal de búsqueda de productos
 window.buscarProductos = function() {
     const searchTerm = document.getElementById('producto-search').value.toLowerCase().trim();
@@ -1555,7 +1678,7 @@ window.mostrarTodosProductos = function() {
     if (noResults) noResults.remove();
     if (contador) contador.remove();
     
-    console.log("🔄 Búsqueda limpiada - Mostrando todos los productos");
+    console.log("Búsqueda limpiada - Mostrando todos los productos");
 };
 
 // Remover resaltado de términos - MEJORADA
@@ -1979,7 +2102,7 @@ async function verifySecurityQuestion() {
     }
 }
 
-// Función para mostrar el formulario de login
+// Función para mostrar el formulario de login (ya debería existir, pero por si acaso)
 function showLogin() {
     document.getElementById('loginForm').style.display = 'block';
     document.getElementById('registerForm').style.display = 'none';
@@ -1990,25 +2113,6 @@ function showLogin() {
         securityQuestionForm.style.display = 'none';
     }
 }
-
-// Función para mostrar el formulario de registro
-function showRegister() {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'block';
-    document.getElementById('forgotPasswordForm').style.display = 'none';
-    
-    const securityQuestionForm = document.getElementById('securityQuestionForm');
-    if (securityQuestionForm) {
-        securityQuestionForm.style.display = 'none';
-    }
-    
-    // Scroll a la sección de registro si estamos en usuario.html
-    const registerForm = document.getElementById('registerForm');
-    if (registerForm) {
-        registerForm.scrollIntoView({ behavior: 'smooth' });
-    }
-}
-
 // Función para alternar visibilidad de contraseña - CORREGIDA
 function togglePassword(inputId) {
     const input = document.getElementById(inputId);
