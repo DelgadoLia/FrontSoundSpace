@@ -520,7 +520,7 @@ if (logoutBtn) {
                     }
                 }).then(() => {
                     // Redirigir después del mensaje
-                    window.location.href = "paginaprincipal.html";
+                    window.location.href = "index.html";
                 });
             }
         });
