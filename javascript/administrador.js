@@ -141,7 +141,7 @@ const FALLBACK_TOTALSALES_API_URL = 'https://backspundspace.onrender.com/api/adm
     }
 
     // renderImageCell: retorna el HTML para la celda de imagen
-    // - Intenta cargar la imagen desde el origen actual y si falla, intenta cargarla desde el backend en localhost:3000
+    // - Intenta cargar la imagen desde el origen actual y si falla, intenta cargarla desde el backend 
     function renderImageCell(imgName) {
         if (!imgName) return '';
         // Se asume que las imágenes se sirven desde /uploads

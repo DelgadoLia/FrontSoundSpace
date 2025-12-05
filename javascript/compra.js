@@ -227,10 +227,10 @@ const fallback = `https://backspundspace.onrender.com/api/carrito/${usuario.id}`
             // Opcional: incluir datos de dirección para incluirlos en el PDF
             const shippingForm = document.getElementById('shipping-form');
             const formData = { usuario_id: usuario.id };
-            const apiOrigin = (location.protocol === 'file:') ? 'http://localhost:3000' : `${location.protocol}//${location.host}`;
+            const apiOrigin = (location.protocol === 'file:') ? 'https://backspundspace.onrender.com' : `${location.protocol}//${location.host}`;
             const primary = `${apiOrigin}/api/nota/compra`;
-const fallback = 'https://backspundspace.onrender.com/api/nota/compra';
-        // Podríamos extraer más campos si es necesario
+            const fallback = 'https://backspundspace.onrender.com/api/nota/compra';
+            // Podríamos extraer más campos si es necesario
 
         try {
             const token = localStorage.getItem('token');
